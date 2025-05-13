@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List - Earthy Forest Theme</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #293f29; /* Dark, desaturated green page background */
+            color: #f0f0e0; /* Warm off-white default text color */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .container{
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2a3f2a, #44e644); /* New dark green gradient */
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .in{ /* The main to-do card */
+            width: 100%;
+            max-width: 600px ;
+            background-color: #51bb51; /* Dark earthy green card background */
+            margin: 80px auto 20px;
+            padding: 30px 25px 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .in h2{
+            color: #000000; /* Warm orange accent for heading */
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+        .in h2 img{
+            width: 35px;
+            margin-left: 15px;
+            filter: drop-shadow(0 0 5px #0c1114aa); /* Glow with new accent */
+        }
+        .row{ /* Input field and button row */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #86bb86; /* Darker green for input row */
+            border-radius: 8px;
+            padding-left: 20px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 2px 4px rgba(17, 16, 16, 0.2);
+            transition: box-shadow 0.3s ease;
+        }
+        .row:focus-within {
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 0 0 2px #77ab59; /* New green accent for focus */
+        }
+        input{
+            flex: 1;
+            border: none;
+            outline: none;
+            background:transparent ;
+            padding: 12px 15px;
+            font-size: 16px;
+            color: #010500; /* Warm off-white text for input */
+        }
+        input::placeholder{
+            color: #1b531b; /* Muted green-grey placeholder */
+        }
+        button{ /* Add Task Button */
+            border: none;
+            outline: none;
+            padding: 12px 30px;
+            background: #3e781c; /* Natural vibrant green */
+            color: #eee3e3;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+        button:hover{
+            background: #699951; /* Darker shade on hover */
+            transform: translateY(-1px);
+        }
+        button:active{
+            transform: translateY(0px);
+            background: #5c884a;
+        }
+
+        ul li{
+            list-style: none;
+            font-size: 17px;
+            padding: 14px 10px 14px 50px;
+            user-select: none;
+            cursor: pointer;
+            position: relative;
+            color: #d8e0d0; /* Adjusted light text for tasks */
+            background-color: #1a601acc; /* Semi-transparent desaturated green */
+            margin-bottom: 10px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+            animation: fadeInItem 0.4s ease forwards;
+        }
+
+        @keyframes fadeInItem {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        ul li.fadeOutItem {
+            animation: fadeOutItem 0.4s ease forwards;
+        }
+
+        @keyframes fadeOutItem {
+            from {
+                opacity: 1;
+                transform: scaleY(1) translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: scaleY(0.8) translateX(-20px);
+                height: 0;
+                padding-top: 0;
+                padding-bottom: 0;
+                margin-bottom: 0;
+                border: none;
+            }
+        }
+
+        ul li:hover{
+            background-color: #4f654f; /* Darker green on hover */
+        }
+
+        /* CSS-only Checkbox */
+        ul li::before{
+            content: '';
+            position: absolute;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background-color: transparent;
+            border: 2px solid #8f9c8f; /* Muted green-grey border */
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        ul li.checked{
+            color:#539d53; /* Dimmed text for checked item */
+            text-decoration: line-through;
+            text-decoration-color: #e67e22; /* Orange accent for line-through */
+        }
+        ul li.checked::before{
+            background-color: #77ab59; /* Fill with primary green when checked */
+            border-color: #77ab59;
+        }
+        /* Adding the checkmark symbol */
+        ul li.checked::after{
+            content: '\2713';
+            position: absolute;
+            top: 50%;
+            left: 26px;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: bold;
+            color: #2f3e2f; /* Dark green checkmark on lighter green background */
+            line-height: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Delete button (span with 'x') */
+        ul li span{
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            font-size: 24px;
+            color: #8f9c8f; /* Muted green-grey for 'x' */
+            line-height: 30px;
+            text-align: center;
+            border-radius: 50%;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        ul li span:hover{
+            background: #e67e22; /* Orange accent on hover for delete */
+            color: #fff;
+            transform: translateY(-50%) scale(1.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="in">
+            <h2>To-Do List
+            <img src="to do img.jpg"></h2> <div class="row">
+                <input type="text" id="input-box" placeholder="Add your task...">
+                <button onclick="AddTask()">Add</button>
+            </div>
+            <ul id="list-container">
+                </ul>
+        </div>
+    </div>
+
+<script>
+
+    const inputBox = document.getElementById("input-box");
+    const listContainer = document.getElementById("list-container");
+
+    function AddTask(){
+        if(inputBox.value.trim() === '') // Trim to prevent empty tasks
+        {
+            alert("You must write Something!");
+        }else{
+            let li = document.createElement("li");
+            li.innerHTML = inputBox.value;
+            listContainer.appendChild(li);
+            let span = document.createElement("span");
+            span.innerHTML = "\u00d7"; // multiplication sign (x)
+            li.appendChild(span);
+        }
+        inputBox.value = "";
+        saveData();
+    }
+
+
+    listContainer.addEventListener("click", function(e){
+        if(e.target.tagName === "LI"){
+            e.target.classList.toggle("checked");
+            saveData();
+        } else if(e.target.tagName === "SPAN"){
+            const listItem = e.target.parentElement;
+            listItem.classList.add("fadeOutItem"); // Add class to trigger CSS animation
+
+            // Wait for animation to end before removing the element from DOM
+            listItem.addEventListener('animationend', function() {
+                listItem.remove();
+                saveData(); // Save data after item is removed
+            }, { once: true }); // Use {once: true} so listener is auto-removed
+        }
+    }, false);
+
+    function saveData(){
+        localStorage.setItem("data", listContainer.innerHTML);
+    }
+
+    function showTask(){
+        listContainer.innerHTML = localStorage.getItem("data");
+         // Re-apply animations for tasks loaded from localStorage if needed
+        // This might not be necessary if CSS handles initial animation on load,
+        // or if you prefer them to just appear.
+        // If you want them to animate in on load, you might need to add them one by one
+        // with a slight delay or re-trigger animation. For simplicity, current setup is fine.
+    }
+    showTask();
+</script>
+</body>
+</html>
